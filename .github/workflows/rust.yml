@@ -1,0 +1,22 @@
+name: Rust
+
+on:
+  push:
+    branches:
+      - experiment/**
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Build all targets
+        run: cargo build --all-targets
+      - name: Tests
+        run: cargo test --all-targets
+      - name: Lint
+        run: cargo clippy --all-targets -- -D warnings
